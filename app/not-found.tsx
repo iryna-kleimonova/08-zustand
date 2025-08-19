@@ -1,7 +1,3 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import css from './Home.module.css';
 import type { Metadata } from 'next';
 
@@ -17,13 +13,6 @@ export const metadata: Metadata = {
 };
 
 const NotFound = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    const timer = setTimeout(() => router.push('/'), 3000);
-    return () => clearTimeout(timer);
-  }, [router]);
-
   return (
     <div>
       <h1 className={css.title}>404 - Page not found</h1>
