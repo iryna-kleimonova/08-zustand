@@ -6,11 +6,10 @@ import { fetchNotes } from '@/lib/api';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import { useDebounce } from 'use-debounce';
 import css from '@/components/NotePage/NotePage.module.css';
 import { Note, NotesResponse } from '@/types/note';
+import Link from 'next/link';
 
 interface NotesClientProps {
   initialNotes: NotesResponse;
@@ -24,7 +23,6 @@ export default function NotesClient({
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 500);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setPage(1);
@@ -44,9 +42,6 @@ export default function NotesClient({
       page === 1 && debouncedSearch === '' ? initialNotes : undefined,
   });
 
-  const handleOpen = () => setIsModalOpen(true);
-  const handleClose = () => setIsModalOpen(false);
-
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -58,18 +53,12 @@ export default function NotesClient({
             onPageChange={setPage}
           />
         )}
-        <button className={css.button} onClick={handleOpen}>
+        <Link href="/notes/action/create" className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
 
       <NoteList notes={data.data} />
-
-      {isModalOpen && (
-        <Modal onClose={handleClose}>
-          <NoteForm onClose={handleClose} />
-        </Modal>
-      )}
     </div>
   );
 }
